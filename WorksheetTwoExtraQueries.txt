@@ -1,0 +1,35 @@
+3. 
+
+A.
+Get the amount of orders fulfilled by a given employee:
+R1G <-- σ(Employee_ID=Given Employee)(Employee)
+R2G <-- R1G⟕Is_Fulfilled
+ResultG <-- R2GℑCount(Order_ID)
+
+SELECT E.F_Name, E.M_Name, E.L_Name, COUNT(F.Order_ID) AS Orders_Fulfilled
+FROM EMPLOYEE E JOIN Is_Fulfilled F ON E.Employee_ID = F.Employee_ID
+WHERE E.Employee_ID = 1
+GROUP BY E.Employee_ID;
+
+B.
+Get the most often payment type:
+R2H <-- Payment_Method ℑ (Count(Payment_ID) → PaymentCount) (Payment_ID)
+R3H <-- σ(PaymentCount = Max(PaymentCount)) (R2H)
+ResultH <-- Π(Payment_ID, PaymentCount) R3H
+
+SELECT MAX(Amount), PID.Payment_Method_ID
+FROM (SELECT COUNT(PF.Payment_Method_ID) AS Amount, PF.Payment_Method_ID
+FROM Pays_For AS PF
+GROUP BY PF.Payment_Method_ID) AS PID;
+
+C.
+
+Get the cost of books that are stocked the highest:
+R1K <-- σ(Stock > BookℑAverage(Stock))Book
+ResultK <-- Π(Title, Price, Stock)R1K
+
+SELECT B.Title, B.Price, B.Stock
+FROM Book B
+WHERE B.Stock > (SELECT AVG(A.Stock)
+                FROM Book A);
+

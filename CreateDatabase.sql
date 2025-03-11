@@ -109,17 +109,17 @@ CREATE TABLE Cash (
 
 -- Create Check table (subclass of Payment_Method)
 CREATE TABLE Check_Payment (
-    Payment_Method_ID INTEGER PRIMARY KEY,
-    Account_ID INTEGER,
+    Payment_Method_ID INTEGER,
+    Account_ID INTEGER PRIMARY KEY,
     Routing_ID INTEGER,
     FOREIGN KEY (Payment_Method_ID) REFERENCES Payment_Method(Payment_Method_ID)
 );
 
 -- Create Card table (subclass of Payment_Method)
 CREATE TABLE Card (
-    Payment_Method_ID INTEGER PRIMARY KEY,
+    Payment_Method_ID INTEGER,
     Type TEXT,
-    Card_ID INTEGER,
+    Card_ID INTEGER PRIMARY KEY,
     Expiration TEXT, -- Stored as YYYY-MM-DD
     SSV TEXT,
     FOREIGN KEY (Payment_Method_ID) REFERENCES Payment_Method(Payment_Method_ID)
@@ -147,9 +147,11 @@ CREATE TABLE Place (
 CREATE TABLE Pays_For (
     Customer_ID INTEGER,
     Payment_Method_ID INTEGER,
-    PRIMARY KEY (Customer_ID, Payment_Method_ID),
+    Order_ID INTEGER,
+    PRIMARY KEY (Customer_ID, Payment_Method_ID, Order_ID),
     FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID),
     FOREIGN KEY (Payment_Method_ID) REFERENCES Payment_Method(Payment_Method_ID)
+     FOREIGN KEY (Order_ID) REFERENCES Orders(Order_ID)
 );
 
 -- Create Is_Fulfilled table (relationship between Order and Employee)
