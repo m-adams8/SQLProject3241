@@ -1,0 +1,107 @@
+4. 
+
+A. 
+
+SELECT C.F_Name, C.M_Name, C.L_Name, SUM(O.Total)
+FROM Customer C JOIN Place PL ON C.Customer_ID = PL.Customer_ID JOIN Orders O ON O.Order_ID = PL.Order_ID 
+GROUP BY C.Customer_ID;
+
+B. 
+
+SELECT C.F_Name, C.M_Name, C.L_Name, C.Email
+FROM Customer C
+JOIN Place PL ON C.Customer_ID = PL.Customer_ID
+JOIN Orders O ON O.Order_ID = PL.Order_ID
+GROUP BY C.Customer_ID, C.F_Name, C.M_Name, C.L_Name, C.Email
+HAVING SUM(O.Total) > (
+    SELECT AVG(Total)
+    FROM (
+        SELECT SUM(O.Total) AS Total
+        FROM Customer C
+        JOIN Place PL ON C.Customer_ID = PL.Customer_ID
+        JOIN Orders O ON O.Order_ID = PL.Order_ID
+        GROUP BY C.Customer_ID
+    ) CO
+);
+
+C.
+
+SELECT B.Title, SUM(AP.Quantity) AS Total
+FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+GROUP BY B.ISBN
+ORDER BY Total DESC;
+
+D. 
+
+SELECT B.Title, SUM(O.Total) AS Total
+FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+GROUP BY B.ISBN
+ORDER BY Total DESC;
+
+E. 
+
+SELECT A.F_Name, A.M_Name, A.L_Name, B.Title
+FROM Written_By WB JOIN Author A ON WB.Author_ID = A.Author_ID JOIN
+(
+SELECT B.ISBN, B.Title, SUM(AP.Quantity) AS Total
+FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+GROUP BY B.ISBN
+ORDER BY Total DESC) B ON B.ISBN = WB.ISBN
+LIMIT 1;
+
+F.
+
+SELECT A.F_Name, A.M_Name, A.L_Name, B.Title
+FROM Written_By WB JOIN Author A ON WB.Author_ID = A.Author_ID JOIN
+(
+SELECT B.ISBN, B.Title, SUM(O.Total) AS Total
+FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+GROUP BY B.ISBN
+ORDER BY Total DESC) B ON B.ISBN = WB.ISBN
+LIMIT 1;
+
+G.
+
+SELECT C.F_Name, C.M_Name, C.L_Name, C.Email, C.Phone, C.Address
+FROM Customer C
+JOIN Place PL ON C.Customer_ID = PL.Customer_ID
+JOIN Orders O ON O.Order_ID = PL.Order_ID
+JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID
+JOIN Written_By WB ON WB.ISBN = AP.ISBN
+WHERE WB.Author_ID = (
+    SELECT A.Author_ID
+    FROM Written_By WB JOIN Author A ON WB.Author_ID = A.Author_ID JOIN
+    (
+    SELECT B.ISBN, B.Title, SUM(O.Total) AS Total
+    FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+    GROUP BY B.ISBN
+    ORDER BY Total DESC) B ON B.ISBN = WB.ISBN
+    LIMIT 1
+);
+
+H. 
+
+SELECT A.F_Name, A.M_Name, A.L_Name
+FROM Author A
+JOIN Written_By WB ON A.Author_ID = WB.Author_ID
+JOIN Are_Purchased AP ON AP.ISBN = WB.ISBN
+JOIN Orders O ON O.Order_ID = AP.Order_ID
+JOIN Place PL ON PL.Order_ID = O.Order_ID
+JOIN Customer C ON C.Customer_ID = PL.Customer_ID
+WHERE C.Customer_ID IN (
+        SELECT C.Customer_ID
+        FROM Customer C
+        JOIN Place PL ON C.Customer_ID = PL.Customer_ID
+        JOIN Orders O ON O.Order_ID = PL.Order_ID
+        GROUP BY C.Customer_ID, C.F_Name, C.M_Name, C.L_Name, C.Email
+        HAVING SUM(O.Total) > (
+            SELECT AVG(Total)
+            FROM (
+                SELECT SUM(O.Total) AS Total
+                FROM Customer C
+                JOIN Place PL ON C.Customer_ID = PL.Customer_ID
+                JOIN Orders O ON O.Order_ID = PL.Order_ID
+                GROUP BY C.Customer_ID
+            ) CO
+        )
+);
