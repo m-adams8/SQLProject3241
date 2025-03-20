@@ -141,17 +141,17 @@ INSERT INTO Author (Author_ID, F_Name, M_Name, L_Name) VALUES (1, 'Chip', NULL, 
 (76, 'Terry', NULL, 'Pratchett');
 
 -- Insert data into Book table
-INSERT INTO Book (ISBN, Title, Price, Category, Year, Stock, Publisher_ID) VALUES (782140661, 'OCP: Oracle9i Certification Kit', 104.97, 'Computer', 2002, 10, 1),
-(72227885, 'SQL Server 2000 for Experienced DBA''s', 34.99, 'Computer', 2003, 10, 2),
+INSERT INTO Book (ISBN, Title, Price, Category, Year, Stock, Publisher_ID) VALUES (782140661, 'OCP: Oracle9i Certification Kit', 104.97, 'Computer', 2002, 4, 1),
+(72227885, 'SQL Server 2000 for Experienced DBA''s', 34.99, 'Computer', 2003, 2, 2),
 (471200247, 'The Data Warehouse Toolkit: The Complete Guide to Dimensional Modeling', 50.0, 'Computer', 2002, 10, 3),
-(72227710, 'How To Do Everything with Your Tablet PC', 17.49, 'Computer', 2003, 10, 2),
+(72227710, 'How To Do Everything with Your Tablet PC', 17.49, 'Computer', 2003, 3, 2),
 (1558605525, 'Data Mining: Practical Machine Learning Tools and Techniques with Java Implementations', 49.95, 'Computer', 1999, 10, 4),
 (972263608, 'Creating Documents with BusinessObjects 5.1', 99.0, 'Computer', 2002, 10, 5),
 (201615762, 'The Guru''s Guide to Transact-SQL', 38.49, 'Computer', 2000, 10, 6),
 (782140114, 'Access 2002 Developer''s Handbook Set', 69.99, 'Computer', 2001, 10, 1),
 (321125169, 'ColdFusion MX Web Application Construction Kit', 38.49, 'Computer', 2002, 10, 7),
 (805317554, 'Fundamentals of Database Systems ', 95.0, 'Computer', 1999, 10, 8),
-(1861004486, 'Professional SQL Server 2000 Programming', 41.99, 'Computer', 2000, 10, 9),
+(1861004486, 'Professional SQL Server 2000 Programming', 41.99, 'Computer', 2000, 1, 9),
 (735712123, 'MySQL', 34.99, 'Computer', 2003, 10, 8),
 (425188361, 'Cerulean Sins', 16.07, 'Literature & Fiction', 2003, 10, 10),
 (142001740, 'The Secret Life of Bees', 14.0, 'Literature & Fiction', 2003, 10, 11),
@@ -726,7 +726,8 @@ INSERT INTO Orders (Order_ID, Total, Day, Month, Year) VALUES
 (17, 26.00, 25, 6, 2025),
 (18, 77.85, 1, 7, 2025),
 (19, 3.44, 5, 7, 2025),
-(20, 45.00, 10, 7, 2025);
+(20, 45.00, 10, 7, 2025),
+(21, 7.99, 13, 7, 2025);
 
 -- Insert data into Place table
 INSERT INTO Place (Customer_ID, Order_ID) VALUES
@@ -749,7 +750,8 @@ INSERT INTO Place (Customer_ID, Order_ID) VALUES
 (17, 17),
 (18, 18),
 (19, 19),
-(20, 20);
+(20, 20),
+(1, 21);
 
 -- Insert data into Pays_For table
 INSERT INTO Pays_For (Customer_ID, Payment_Method_ID, Order_ID) VALUES
@@ -772,7 +774,8 @@ INSERT INTO Pays_For (Customer_ID, Payment_Method_ID, Order_ID) VALUES
 (17, 2, 17),
 (18, 3, 18),
 (19, 1, 19),
-(20, 1, 20);
+(20, 1, 20),
+(1, 1, 21);
 
 -- Insert data into Is_Fulfilled table
 INSERT INTO Is_Fulfilled (Order_ID, Employee_ID) VALUES
@@ -795,7 +798,8 @@ INSERT INTO Is_Fulfilled (Order_ID, Employee_ID) VALUES
 (17, 17),
 (18, 18),
 (19, 19),
-(20, 20);
+(20, 20),
+(21, 1);
 
 -- Insert data into Are_Purchased table
 INSERT INTO Are_Purchased (ISBN, Order_ID, Quantity) VALUES
@@ -818,7 +822,9 @@ INSERT INTO Are_Purchased (ISBN, Order_ID, Quantity) VALUES
 (312311354, 17, 2),
 (312287941, 18, 3),
 (312243022, 19, 1),
-(609610570, 20, 2);
+(609610570, 20, 2),
+(61161721, 21, 1);
+
 
 -- Insert data into Has table
 INSERT INTO Has (Employee_ID, Warehouse_ID) VALUES

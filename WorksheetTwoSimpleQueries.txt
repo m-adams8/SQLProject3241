@@ -5,6 +5,13 @@ SELECT B.Title
 FROM Book B JOIN Written_By WB ON B.ISBN = WB.ISBN JOIN Author A ON WB.Author_ID = A.Author_ID
 WHERE A.L_Name = 'Pratchett' AND B.Price < 10;
 
+Expected Output:
+Small Gods
+Going Postal
+Pyramids
+Guards! Guards!
+Unseen Academicals
+
 B. 
 
 SELECT B.Title, O.Day, O.Month, O.Year
@@ -12,11 +19,20 @@ FROM Customer C JOIN Place PL ON C.Customer_ID = PL.Customer_ID JOIN Orders O ON
 JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
 WHERE C.Customer_ID = 1;
 
+Expected Output:
+OCP: Oracle9i Certification Kit|5|4|2025
+
 C.
 
 SELECT Title, ISBN
 FROM Book
 WHERE Stock < 5;
+
+Expected Output:
+How To Do Everything with Your Tablet PC|72227710
+SQL Server 2000 for Experienced DBA's|72227885
+OCP: Oracle9i Certification Kit|782140661
+Professional SQL Server 2000 Programming|1861004486
 
 D.
 
@@ -26,12 +42,19 @@ JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISB
 JOIN Written_By WB ON B.ISBN = WB.ISBN JOIN Author A ON WB.Author_ID = A.Author_ID
 WHERE A.L_Name = 'Pratchett';
 
+Expected Output:
+John|A|Doe|Unseen Academicals
+
 E. 
 
 SELECT C.Customer_ID, AP.Quantity AS Total_Books_Purchased
 FROM Customer C JOIN Place PL ON C.Customer_ID = PL.Customer_ID JOIN Orders O ON O.Order_ID = PL.Order_ID 
 JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID 
 WHERE C.Customer_ID = 1;
+
+Expected Output:
+1|2
+1|1
 
 F.
 
@@ -42,3 +65,6 @@ JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID
 GROUP BY C.Customer_ID
 ORDER BY Total_Books_Purchased DESC
 LIMIT 1;
+
+Expected Output:
+7|David|G|Martinez|4

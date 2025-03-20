@@ -6,6 +6,28 @@ SELECT C.F_Name, C.M_Name, C.L_Name, SUM(O.Total)
 FROM Customer C JOIN Place PL ON C.Customer_ID = PL.Customer_ID JOIN Orders O ON O.Order_ID = PL.Order_ID 
 GROUP BY C.Customer_ID;
 
+Expected Output:
+John|A|Doe|217.93
+Jane|B|Smith|34.99
+James|C|Brown|150.0
+Emily|D|Davis|17.49
+Michael|E|Wilson|99.9
+Sarah|F|Miller|99.0
+David|G|Martinez|153.96
+Laura|H|Garcia|139.98
+Chris|I|Anderson|115.47
+Amy|J|Thomas|95.0
+Brian|K|Jackson|83.98
+Rachel|L|White|34.99
+Kevin|M|Harris|64.28
+Olivia|N|Clark|28.0
+Jeff|O|Lewis|74.85
+Victoria|P|Young|18.95
+Frank|Q|Hall|26.0
+Sophia|R|Allen|77.85
+Ethan|S|King|3.44
+Madison|T|Scott|45.0
+
 B. 
 
 SELECT C.F_Name, C.M_Name, C.L_Name, C.Email
@@ -24,6 +46,17 @@ HAVING SUM(O.Total) > (
     ) CO
 );
 
+Expected Output:
+John|A|Doe|john.doe@example.com
+James|C|Brown|james.brown@example.com
+Michael|E|Wilson|michael.wilson@example.com
+Sarah|F|Miller|sarah.miller@example.com
+David|G|Martinez|david.martinez@example.com
+Laura|H|Garcia|laura.garcia@example.com
+Chris|I|Anderson|chris.anderson@example.com
+Amy|J|Thomas|amy.thomas@example.com
+Brian|K|Jackson|brian.jackson@example.com
+
 C.
 
 SELECT B.Title, SUM(AP.Quantity) AS Total
@@ -31,12 +64,58 @@ FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON A
 GROUP BY B.ISBN
 ORDER BY Total DESC;
 
+Expected Output:
+Cerulean Sins|4
+The Guru's Guide to Transact-SQL|4
+Google Hacks|3
+The Data Warehouse Toolkit: The Complete Guide to Dimensional Modeling|3
+ColdFusion MX Web Application Construction Kit|3
+The Girl in the Red Coat: A Memoir|3
+Professional SQL Server 2000 Programming|2
+Data Mining: Practical Machine Learning Tools and Techniques with Java Implementations|2
+OCP: Oracle9i Certification Kit|2
+Access 2002 Developer's Handbook Set|2
+Execution: The Discipline of Getting Things Done|2
+The Pianist|2
+The Secret Life of Bees|2
+Creating Documents with BusinessObjects 5.1|1
+Fundamentals of Database Systems |1
+MySQL|1
+The Hours|1
+SQL Server 2000 for Experienced DBA's|1
+How To Do Everything with Your Tablet PC|1
+Investing in Fixer-Uppers : A Complete Guide to Buying Low, Fixing Smart, Adding Value, and Selling (or Renting) High|1
+Unseen Academicals|1
+
 D. 
 
 SELECT B.Title, SUM(O.Total) AS Total
 FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
 GROUP BY B.ISBN
 ORDER BY Total DESC;
+
+Expected Output:
+OCP: Oracle9i Certification Kit|209.94
+The Guru's Guide to Transact-SQL|153.96
+The Data Warehouse Toolkit: The Complete Guide to Dimensional Modeling|150.0
+Access 2002 Developer's Handbook Set|139.98
+ColdFusion MX Web Application Construction Kit|115.47
+Data Mining: Practical Machine Learning Tools and Techniques with Java Implementations|99.9
+Creating Documents with BusinessObjects 5.1|99.0
+Fundamentals of Database Systems |95.0
+Professional SQL Server 2000 Programming|83.98
+The Girl in the Red Coat: A Memoir|77.85
+Google Hacks|74.85
+Cerulean Sins|64.28
+Execution: The Discipline of Getting Things Done|45.0
+MySQL|34.99
+SQL Server 2000 for Experienced DBA's|34.99
+The Secret Life of Bees|28.0
+The Pianist|26.0
+Investing in Fixer-Uppers : A Complete Guide to Buying Low, Fixing Smart, Adding Value, and Selling (or Renting) High|18.95
+How To Do Everything with Your Tablet PC|17.49
+Unseen Academicals|7.99
+The Hours|3.44
 
 E. 
 
@@ -49,6 +128,9 @@ GROUP BY B.ISBN
 ORDER BY Total DESC) B ON B.ISBN = WB.ISBN
 LIMIT 1;
 
+Expected Output:
+Laurell|K.|Hamilton|Cerulean Sins
+
 F.
 
 SELECT A.F_Name, A.M_Name, A.L_Name, B.Title
@@ -59,6 +141,9 @@ FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON A
 GROUP BY B.ISBN
 ORDER BY Total DESC) B ON B.ISBN = WB.ISBN
 LIMIT 1;
+
+Expected Output:
+Chip||Dawes|OCP: Oracle9i Certification Kit
 
 G.
 
@@ -78,6 +163,9 @@ WHERE WB.Author_ID = (
     ORDER BY Total DESC) B ON B.ISBN = WB.ISBN
     LIMIT 1
 );
+
+Expected Output:
+John|A|Doe|john.doe@example.com|5551234567|123 Main St, New York, NY
 
 H. 
 
@@ -105,3 +193,15 @@ WHERE C.Customer_ID IN (
             ) CO
         )
 );
+
+Expected Output:
+Chip||Dawes
+Terry||Pratchett
+Ralph||Kimball
+Ian|H.|Witten
+Robert|D.|Schmidt
+Ken||Henderson
+Paul||Litwin
+Ben||Forta
+Ramez|A.|Elmasri
+Rob||Vieira
