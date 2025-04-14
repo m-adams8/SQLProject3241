@@ -1,0 +1,10 @@
+CREATE INDEX book_title
+ON Book (Title);
+
+Makes an index for the title of books as they will be called a lot.
+
+CREATE INDEX author_name
+ON Author (F_Name, M_Name, L_Name);
+
+Makes an index for the names of the authors as they will be called a lot.
+
