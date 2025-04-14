@@ -2,18 +2,18 @@
 -- Create Publisher table
 CREATE TABLE Publisher (
     Publisher_ID INTEGER PRIMARY KEY,
-    Name TEXT NOT NULL,
-    Email TEXT,
+    Name VARCHAR(64) NOT NULL,
+    Email VARCHAR(64),
     Address TEXT,
-    Phone TEXT
+    Phone VARCHAR(16)
 );
 
 -- Create Book table
 CREATE TABLE Book (
     ISBN INTEGER PRIMARY KEY,
-    Title TEXT NOT NULL,
+    Title VARCHAR(64) NOT NULL,
     Price REAL,
-    Category TEXT,
+    Category VARCHAR(32),
     Year INTEGER,
     Stock INTEGER,
     Publisher_ID INTEGER,
@@ -23,9 +23,9 @@ CREATE TABLE Book (
 -- Create Author table
 CREATE TABLE Author (
     Author_ID INTEGER PRIMARY KEY,
-    F_Name TEXT,
-    M_Name TEXT,
-    L_Name TEXT
+    F_Name VARCHAR(32),
+    M_Name VARCHAR(32),
+    L_Name VARCHAR(32)
 );
 
 -- Create Written_By table (many-to-many relationship between Book and Author)
@@ -55,14 +55,20 @@ CREATE TABLE Are_Stored (
 );
 
 -- Create Employee table
+CREATE TABLE Employee_SSN (
+    Employee_ID INTEGER,
+    SSN VARCHAR(9) PRIMARY KEY,
+    FOREIGN KEY (Employee_ID) REFERENCES Employee(Employee_ID)
+);
+
 CREATE TABLE Employee (
     Employee_ID INTEGER PRIMARY KEY,
-    F_Name TEXT,
-    M_Name TEXT,
-    L_Name TEXT,
-    SSN TEXT,
-    Phone TEXT,
-    Salary REAL
+    F_Name VARCHAR(32),
+    M_Name VARCHAR(32),
+    L_Name VARCHAR(32),
+    Phone VARCHAR(16),
+    Salary REAL,
+    Job_Type VARCHAR(16)
 );
 
 -- Create Worker table (subclass of Employee)
@@ -86,12 +92,12 @@ CREATE TABLE Manager (
 -- Create Customer table
 CREATE TABLE Customer (
     Customer_ID INTEGER PRIMARY KEY,
-    F_Name TEXT,
-    M_Name TEXT,
-    L_Name TEXT,
-    Email TEXT,
+    F_Name VARCHAR(32),
+    M_Name VARCHAR(32),
+    L_Name VARCHAR(32),
+    Email VARCHAR(64),
     Address TEXT,
-    Phone TEXT,
+    Phone VARCHAR(16),
     Account_ID INTEGER,
     Total_Orders INTEGER
 );
@@ -116,13 +122,19 @@ CREATE TABLE Check_Payment (
 );
 
 -- Create Card table (subclass of Payment_Method)
+CREATE TABLE Card_Info (
+    Type VARCHAR(8),
+    Card_ID INTEGER PRIMARY KEY,
+    Expiration VARCHAR(10), -- Stored as YYYY-MM-DD
+    SSV VARCHAR(3)
+);
+
 CREATE TABLE Card (
     Payment_Method_ID INTEGER,
-    Type TEXT,
-    Card_ID INTEGER PRIMARY KEY,
-    Expiration TEXT, -- Stored as YYYY-MM-DD
-    SSV TEXT,
-    FOREIGN KEY (Payment_Method_ID) REFERENCES Payment_Method(Payment_Method_ID)
+    Card_ID INTEGER,
+    PRIMARY KEY (Payment_Method_ID, Card_ID),
+    FOREIGN KEY (Payment_Method_ID) REFERENCES Payment_Method(Payment_Method_ID),
+    FOREIGN KEY (Card_ID) REFERENCES Card_Info(Card_ID)
 );
 
 -- Create Orders table
@@ -150,8 +162,8 @@ CREATE TABLE Pays_For (
     Order_ID INTEGER,
     PRIMARY KEY (Customer_ID, Payment_Method_ID, Order_ID),
     FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID),
-    FOREIGN KEY (Payment_Method_ID) REFERENCES Payment_Method(Payment_Method_ID)
-     FOREIGN KEY (Order_ID) REFERENCES Orders(Order_ID)
+    FOREIGN KEY (Payment_Method_ID) REFERENCES Payment_Method(Payment_Method_ID),
+    FOREIGN KEY (Order_ID) REFERENCES Orders(Order_ID)
 );
 
 -- Create Is_Fulfilled table (relationship between Order and Employee)

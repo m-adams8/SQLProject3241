@@ -2,8 +2,8 @@
 
 A. 
 
-SELECT C.F_Name, C.M_Name, C.L_Name, SUM(O.Total)
-FROM Customer C JOIN Place PL ON C.Customer_ID = PL.Customer_ID JOIN Orders O ON O.Order_ID = PL.Order_ID 
+SELECT C.F_Name AS First_Name, C.M_Name AS Middle_Name, C.L_Name AS Last_Name, SUM(O.Total) AS Total
+FROM Customer AS C JOIN Place AS PL ON C.Customer_ID = PL.Customer_ID JOIN Orders AS O ON O.Order_ID = PL.Order_ID 
 GROUP BY C.Customer_ID;
 
 Expected Output:
@@ -30,18 +30,18 @@ Madison|T|Scott|45.0
 
 B. 
 
-SELECT C.F_Name, C.M_Name, C.L_Name, C.Email
-FROM Customer C
-JOIN Place PL ON C.Customer_ID = PL.Customer_ID
-JOIN Orders O ON O.Order_ID = PL.Order_ID
+SELECT C.F_Name AS First_Name, C.M_Name AS Middle_Name, C.L_Name AS Last_Name, C.Email AS Email
+FROM Customer AS C 
+JOIN Place AS PL ON C.Customer_ID = PL.Customer_ID
+JOIN Orders AS O ON O.Order_ID = PL.Order_ID
 GROUP BY C.Customer_ID, C.F_Name, C.M_Name, C.L_Name, C.Email
 HAVING SUM(O.Total) > (
     SELECT AVG(Total)
     FROM (
         SELECT SUM(O.Total) AS Total
-        FROM Customer C
-        JOIN Place PL ON C.Customer_ID = PL.Customer_ID
-        JOIN Orders O ON O.Order_ID = PL.Order_ID
+        FROM Customer AS C
+        JOIN Place AS PL ON C.Customer_ID = PL.Customer_ID
+        JOIN Orders AS O ON O.Order_ID = PL.Order_ID
         GROUP BY C.Customer_ID
     ) CO
 );
@@ -59,8 +59,8 @@ Brian|K|Jackson|brian.jackson@example.com
 
 C.
 
-SELECT B.Title, SUM(AP.Quantity) AS Total
-FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+SELECT B.Title AS Title, SUM(AP.Quantity) AS Total
+FROM Orders AS O JOIN Are_Purchased AS AP ON AP.Order_ID = O.Order_ID JOIN Book AS B ON AP.ISBN = B.ISBN
 GROUP BY B.ISBN
 ORDER BY Total DESC;
 
@@ -89,8 +89,8 @@ Unseen Academicals|1
 
 D. 
 
-SELECT B.Title, SUM(O.Total) AS Total
-FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+SELECT B.Title AS Title, SUM(O.Total) AS Total
+FROM Orders AS O JOIN Are_Purchased AS AP ON AP.Order_ID = O.Order_ID JOIN Book AS B ON AP.ISBN = B.ISBN
 GROUP BY B.ISBN
 ORDER BY Total DESC;
 
@@ -119,11 +119,11 @@ The Hours|3.44
 
 E. 
 
-SELECT A.F_Name, A.M_Name, A.L_Name, B.Title
-FROM Written_By WB JOIN Author A ON WB.Author_ID = A.Author_ID JOIN
+SELECT A.F_Name AS First_Name, A.M_Name AS Middle_Name, A.L_Name AS Last_Name, B.Title AS Title
+FROM Written_By AS WB JOIN Author AS A ON WB.Author_ID = A.Author_ID JOIN
 (
 SELECT B.ISBN, B.Title, SUM(AP.Quantity) AS Total
-FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+FROM Orders AS O JOIN Are_Purchased AS AP ON AP.Order_ID = O.Order_ID JOIN Book AS B ON AP.ISBN = B.ISBN
 GROUP BY B.ISBN
 ORDER BY Total DESC) B ON B.ISBN = WB.ISBN
 LIMIT 1;
@@ -133,11 +133,11 @@ Laurell|K.|Hamilton|Cerulean Sins
 
 F.
 
-SELECT A.F_Name, A.M_Name, A.L_Name, B.Title
-FROM Written_By WB JOIN Author A ON WB.Author_ID = A.Author_ID JOIN
+SELECT A.F_Name AS First_Name, A.M_Name AS Middle_Name, A.L_Name AS Last_Name, B.Title AS Title
+FROM Written_By AS WB JOIN Author AS A ON WB.Author_ID = A.Author_ID JOIN
 (
 SELECT B.ISBN, B.Title, SUM(O.Total) AS Total
-FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+FROM Orders AS O JOIN Are_Purchased AS AP ON AP.Order_ID = O.Order_ID JOIN Book AS B ON AP.ISBN = B.ISBN
 GROUP BY B.ISBN
 ORDER BY Total DESC) B ON B.ISBN = WB.ISBN
 LIMIT 1;
@@ -147,18 +147,18 @@ Chip||Dawes|OCP: Oracle9i Certification Kit
 
 G.
 
-SELECT C.F_Name, C.M_Name, C.L_Name, C.Email, C.Phone, C.Address
-FROM Customer C
-JOIN Place PL ON C.Customer_ID = PL.Customer_ID
-JOIN Orders O ON O.Order_ID = PL.Order_ID
-JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID
-JOIN Written_By WB ON WB.ISBN = AP.ISBN
+SELECT C.F_Name AS First_Name, C.M_Name AS Middle_Name, C.L_Name AS Last_Name, C.Email AS Email, C.Phone AS Phone, C.Address AS Address
+FROM Customer AS C
+JOIN Place AS PL ON C.Customer_ID = PL.Customer_ID
+JOIN Orders AS O ON O.Order_ID = PL.Order_ID
+JOIN Are_Purchased AS AP ON AP.Order_ID = O.Order_ID
+JOIN Written_By AS WB ON WB.ISBN = AP.ISBN
 WHERE WB.Author_ID = (
     SELECT A.Author_ID
     FROM Written_By WB JOIN Author A ON WB.Author_ID = A.Author_ID JOIN
     (
     SELECT B.ISBN, B.Title, SUM(O.Total) AS Total
-    FROM Orders O JOIN Are_Purchased AP ON AP.Order_ID = O.Order_ID JOIN Book B ON AP.ISBN = B.ISBN
+    FROM Orders AS O JOIN Are_Purchased AS AP ON AP.Order_ID = O.Order_ID JOIN Book AS B ON AP.ISBN = B.ISBN
     GROUP BY B.ISBN
     ORDER BY Total DESC) B ON B.ISBN = WB.ISBN
     LIMIT 1
@@ -169,26 +169,26 @@ John|A|Doe|john.doe@example.com|5551234567|123 Main St, New York, NY
 
 H. 
 
-SELECT A.F_Name, A.M_Name, A.L_Name
-FROM Author A
-JOIN Written_By WB ON A.Author_ID = WB.Author_ID
-JOIN Are_Purchased AP ON AP.ISBN = WB.ISBN
-JOIN Orders O ON O.Order_ID = AP.Order_ID
-JOIN Place PL ON PL.Order_ID = O.Order_ID
-JOIN Customer C ON C.Customer_ID = PL.Customer_ID
+SELECT A.F_Name AS First_Name, A.M_Name AS Middle_Name, A.L_Name AS Last_Name
+FROM Author AS A
+JOIN Written_By AS WB ON A.Author_ID = WB.Author_ID
+JOIN Are_Purchased AS AP ON AP.ISBN = WB.ISBN
+JOIN Orders AS O ON O.Order_ID = AP.Order_ID
+JOIN Place AS PL ON PL.Order_ID = O.Order_ID
+JOIN Customer AS C ON C.Customer_ID = PL.Customer_ID
 WHERE C.Customer_ID IN (
         SELECT C.Customer_ID
-        FROM Customer C
-        JOIN Place PL ON C.Customer_ID = PL.Customer_ID
-        JOIN Orders O ON O.Order_ID = PL.Order_ID
+        FROM Customer AS C
+        JOIN Place AS PL ON C.Customer_ID = PL.Customer_ID
+        JOIN Orders AS O ON O.Order_ID = PL.Order_ID
         GROUP BY C.Customer_ID, C.F_Name, C.M_Name, C.L_Name, C.Email
         HAVING SUM(O.Total) > (
             SELECT AVG(Total)
             FROM (
                 SELECT SUM(O.Total) AS Total
-                FROM Customer C
-                JOIN Place PL ON C.Customer_ID = PL.Customer_ID
-                JOIN Orders O ON O.Order_ID = PL.Order_ID
+                FROM Customer AS C
+                JOIN Place AS PL ON C.Customer_ID = PL.Customer_ID
+                JOIN Orders AS O ON O.Order_ID = PL.Order_ID
                 GROUP BY C.Customer_ID
             ) CO
         )
