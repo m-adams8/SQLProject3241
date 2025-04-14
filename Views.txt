@@ -1,0 +1,6 @@
+CREATE VIEW PublisherSales AS
+SELECT P.Publisher_ID, p.Name AS PublisherName, COUNT(pur.ISBN) AS TotalOrders, SUM(b.Price * pur.Quantity) AS TotalRevenue
+From Book b JOIN Are_Purchased pur ON b.ISBN = pur.ISBN JOIN Publisher p ON p.Publisher_ID = b.Publisher_ID
+GROUP BY p.Publisher_ID, p.Name;
+
+This view summarizes each publisher’s performance by counting the number of books sold by the publisher and adding the revenue
